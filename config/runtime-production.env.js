@@ -1,0 +1,3 @@
+module.exports = {
+  development: false
+}

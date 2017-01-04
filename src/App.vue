@@ -1,0 +1,95 @@
+<template>
+<div id="app">
+
+<div class="min-height-12vh">
+<nav class="navbar navbar-dark nav-colors">
+  <div class="container maxwidth-800">
+  <button class="navbar-toggler hidden-md-up float-xs-right" v-collapse type="submit"></button>
+  <a class="navbar-brand" href="https://www.xs4all.nl/">
+    <img src="https://cdn.xs4all.nl/content/_xs4all-themes/first-class/images/logos/xs4all-emblem-yellow.svg" height="25" alt="">
+  </a>
+  <ul class="nav navbar-nav">
+    <router-link tag="li" to="/" class="nav-item">
+      <a class="nav-link">Speedtest</a>
+    </router-link>
+  </ul>
+  <div class="collapse navbar-toggleable-sm">
+    <div class="hidden-md-up">&nbsp;<p>&nbsp;</p></div>
+    <ul class="nav navbar-nav">
+      <router-link tag="li" to="/" class="nav-item">
+        <a class="nav-link hidden-md-up">Speedtest</a>
+      </router-link>
+      <router-link tag="li" to="/info/" class="nav-item">
+        <a class="nav-link">Info</a>
+      </router-link>
+      <router-link tag="li" to="/settings/" class="nav-item">
+        <a class="nav-link">Settings</a>
+      </router-link>
+    </ul>
+  </div>
+  </div>
+</nav>
+</div>
+
+<div class="container main maxwidth-800">
+  <transition name="fade" mode="out-in">
+    <router-view class="view"></router-view>
+  </transition>
+</div>
+
+</div>
+</template>
+
+<script>
+export default {
+  name: 'app'
+}
+</script>
+
+<style lang="scss">
+html, body {
+  margin: 0px;
+  padding: 0px;
+  height: 100vh;
+}
+body {
+  background: #ffffff;
+}
+#app {
+  min-height: 100%;
+}
+/*
+.main {
+  position: relative;
+  overflow-x: hidden;
+  height: 78vh;
+}
+.view {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+}
+*/
+.nav-colors {
+  color: white;
+  background: #191919;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: all .2s ease-in-out;
+}
+.fade-enter, .fade-leave-active {
+  opacity: 0;
+}
+.slide-enter {
+  transform: translateX(-100%);
+}
+.slide-enter-active {
+  transition: all .3s ease;
+}
+.slide-leave-active {
+  transition: all .3s ease;
+  transform: translateX(100%);
+}
+</style>
