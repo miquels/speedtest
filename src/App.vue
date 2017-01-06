@@ -4,9 +4,12 @@
 <div class="min-height-12vh">
 <nav class="navbar navbar-dark nav-colors">
   <div class="container maxwidth-800">
-  <button class="navbar-toggler hidden-md-up float-xs-right" v-collapse type="submit"></button>
   <a class="navbar-brand" href="https://www.xs4all.nl/">
     <img src="https://cdn.xs4all.nl/content/_xs4all-themes/first-class/images/logos/xs4all-emblem-yellow.svg" height="25" alt="">
+  </a>
+  <button class="navbar-toggler hidden-md-up float-xs-right" v-collapse type="submit"></button>
+  <a class="navbar-brand hidden-sm-down float-xs-right" href="https://github.com/miquels/speedtest">
+    <img src="./assets/GitHub-Mark-Light-32px.png" height="32" alt="">
   </a>
   <ul class="nav navbar-nav">
     <router-link tag="li" to="/" exact class="nav-item">
