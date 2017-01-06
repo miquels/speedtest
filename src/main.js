@@ -23,7 +23,7 @@ var router = new Router({
   scrollBehavior: () => ({ y: 0 }),
   linkActiveClass: 'active',
   routes: [
-      { path: '/', component: SpeedTest, exact: true },
+      { path: '/', component: SpeedTest },
       { path: '/settings/', component: Settings },
       { path: '/info/', component: Info },
       { path: '*', redirect: '/' }

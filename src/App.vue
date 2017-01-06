@@ -9,14 +9,14 @@
     <img src="https://cdn.xs4all.nl/content/_xs4all-themes/first-class/images/logos/xs4all-emblem-yellow.svg" height="25" alt="">
   </a>
   <ul class="nav navbar-nav">
-    <router-link tag="li" to="/" class="nav-item">
+    <router-link tag="li" to="/" exact class="nav-item">
       <a class="nav-link">Speedtest</a>
     </router-link>
   </ul>
   <div class="collapse navbar-toggleable-sm">
     <div class="hidden-md-up">&nbsp;<p>&nbsp;</p></div>
     <ul class="nav navbar-nav">
-      <router-link tag="li" to="/" class="nav-item">
+      <router-link tag="li" to="/" exact class="nav-item">
         <a class="nav-link hidden-md-up">Speedtest</a>
       </router-link>
       <router-link tag="li" to="/info/" class="nav-item">
