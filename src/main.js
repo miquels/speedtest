@@ -5,7 +5,9 @@ import App from './App'
 import './style/style.scss'
 
 import Collapse from 'directives/Collapse'
+import Dropdown from 'directives/Dropdown'
 Vue.directive('collapse', Collapse)
+Vue.directive('dropdown', Dropdown)
 
 import Router from 'vue-router'
 import store from './store'
