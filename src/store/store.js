@@ -5,8 +5,14 @@ Vue.use(Vuex)
 
 const state = {
   host: 'webdev.langeraar.net:4000',
-  numParallelUp: 8,
-  numParallelDown: 8
+  connType: 'Generic',
+  units: 'Mbps',
+  MBexcludeOverhead: true,
+  connsUp: 8,
+  connsDown: 8,
+  l23overhead: [ 'ether' ],
+  l12overhead: 'fiber',
+  overhead: 1.01
 }
 
 // mutations: synchronous changes
@@ -17,6 +23,14 @@ const mutations = {
 
   numParallelDown (state, num) {
     state.numParallelDown = num
+  },
+
+  saveSettings (state, data) {
+    for (let i in data) {
+      if (typeof state[i] !== 'undefined') {
+        state[i] = data[i]
+      }
+    }
   }
 }
 

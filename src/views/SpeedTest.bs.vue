@@ -7,7 +7,7 @@
     <div class="col-xs-12 col-md-6 height-35vh height-40vh-sm-down">
       <div class="row height-100">
         <div class="col-xs-12">
-          <radial-gauge class="gauge" :value="gaugeValue"></radial-gauge>
+          <radial-gauge class="gauge" :value="gaugeValue" :units="units"></radial-gauge>
         </div>
       </div>
     </div>
@@ -17,7 +17,7 @@
           <bar-graph class="bars" :bars="downBars" label="download" :barWidth="2"></bar-graph>
         </div>
         <div class="col-xs-4 flex">
-          <number-value class="number" label="Mbit/s" :value="downFinal"></number-value>
+          <number-value class="number" :label="units" :value="downFinal"></number-value>
         </div>
       </div>
       <div class="row height-50">
@@ -25,7 +25,7 @@
           <bar-graph class="bars" :bars="upBars" label="upload" :barWidth="2"></bar-graph>
         </div>
         <div class="col-xs-4 flex">
-          <number-value class="number" label="Mbit/s" :value="upFinal"></number-value>
+          <number-value class="number" :label="units" :value="upFinal"></number-value>
         </div>
       </div>
     </div>
@@ -78,7 +78,8 @@ export default {
     progress: 0,
     waiting: false,
     maxTestMS: 10000,
-    development: Config.development
+    development: Config.development,
+    units: 'Mbit/s'
   }),
 
   components: {
@@ -92,9 +93,14 @@ export default {
     ResizeMixin
   ],
 
-  mounted () {
+  created () {
     this.timeout = null
     window.ST = this
+    let u = this.$store.state.units
+    this.units = u === 'Mbps' ? 'Mbit/s' : 'MByte/s'
+  },
+
+  mounted () {
     this.$on('resize', () => {
       this.$children.forEach(c => { c.$emit('resize') })
     })
