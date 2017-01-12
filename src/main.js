@@ -16,7 +16,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 Vue.use(Router)
 
-import SpeedTest from './views/SpeedTest.bs'
+import SpeedTest from './views/SpeedTest'
 import Settings from './views/Settings'
 import Info from './views/Info'
 
