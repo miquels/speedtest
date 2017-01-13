@@ -7,7 +7,10 @@
     <div class="col-xs-12 col-md-6 height-35vh height-40vh-sm-down">
       <div class="row height-100">
         <div class="col-xs-12">
-          <radial-gauge class="gauge" :value="gaugeValue" :units="units"></radial-gauge>
+          <radial-gauge class="gauge" :value="gaugeValue" :units="scale.units"
+            :majorTicks="scale.majorTicks" :minorTicks="scale.minorTicks"
+            :transformValue="scale.transformValue" :maxValue="scale.maxValue">
+          </radial-gauge>
         </div>
       </div>
     </div>
@@ -17,7 +20,7 @@
           <bar-graph class="bars" :bars="downBars" label="download" :barWidth="2"></bar-graph>
         </div>
         <div class="col-xs-4 flex">
-          <number-value class="number" :label="units" :value="downFinal"></number-value>
+          <number-value class="number" :label="scale.units" :value="downFinal"></number-value>
         </div>
       </div>
       <div class="row height-50">
@@ -25,7 +28,7 @@
           <bar-graph class="bars" :bars="upBars" label="upload" :barWidth="2"></bar-graph>
         </div>
         <div class="col-xs-4 flex">
-          <number-value class="number" :label="units" :value="upFinal"></number-value>
+          <number-value class="number" :label="scale.units" :value="upFinal"></number-value>
         </div>
       </div>
     </div>
@@ -61,6 +64,27 @@ import ResizeMixin from 'components/ResizeMixin'
 import SpeedTest from '../lib/speedtest.js'
 import Config from 'config'
 
+const Mbitprops = {
+  majorTicks: [ 0, 1, 5, 20, 50, 100, 200, 500, 1000 ],
+  minorTicks: [
+    [ 0, 1, 0.5 ], [ 1, 5, 1 ], [ 5, 20, 5 ], [ 20, 50, 10 ],
+    [ 50, 100, 25 ], [ 100, 200, 50 ], [ 200, 1000, 100 ]
+  ],
+  transformValue: function (val) { return Math.log(val + 1) * 100 / Math.log(1001) },
+  maxValue: 1000,
+  units: 'Mbit/s'
+}
+const MByteprops = {
+  majorTicks: [ 0, 0.1, 0.5, 2, 5, 10, 20, 50, 100 ],
+  minorTicks: [
+    [ 0, 0.1, 0.05 ], [ 0.1, 0.5, 0.1 ], [ 0.5, 2, 0.5 ], [ 2, 5, 1 ],
+    [ 5, 10, 2.5 ], [ 10, 20, 5 ], [ 20, 100, 10 ]
+  ],
+  transformValue: function (val) { return Math.log(val * 10 + 1) * 100 / Math.log(1001) },
+  maxValue: 100,
+  units: 'MByte/s'
+}
+
 export default {
   name: 'speedtest',
   data: () => ({
@@ -79,7 +103,7 @@ export default {
     waiting: false,
     maxTestMS: 10000,
     development: Config.development,
-    units: 'Mbit/s'
+    scale: Mbitprops
   }),
 
   components: {
@@ -97,7 +121,7 @@ export default {
     this.timeout = null
     window.ST = this
     let u = this.$store.state.units
-    this.units = u === 'Mbps' ? 'Mbit/s' : 'MByte/s'
+    this.scale = u === 'Mbps' ? Mbitprops : MByteprops
   },
 
   mounted () {
@@ -149,13 +173,14 @@ export default {
         this.curBytes = 0
         this.curRate = 0
 
+        let s = this.$store.state
         let url = this.isUp ? 'ws://webdev.langeraar.net:4000/speedtest/sink'
                             : 'ws://webdev.langeraar.net:4000/speedtest/source'
         this.st = new SpeedTest({
           url: url,
           isUpload: this.isUp,
           maxTestMS: 10000,
-          numParallel: 8
+          numParallel: this.isUp ? s.connsUp : s.connsDown
         })
         this.gaugeValue = 0
         this.st.connect().then(() => {
@@ -204,8 +229,10 @@ export default {
       let r = this.st.poll()
       if (r.curSecs > 0.8) {
         Object.assign(this, r)
-        let curbps = this.curRate * 8 * 1.027
-        let avgbps = this.avgRate * 8 * 1.027
+        let s = this.$store.state
+        let f = s.overhead * (s.units === 'Mbps' ? 8 : 1)
+        let curbps = this.curRate * f
+        let avgbps = this.avgRate * f
         let bars
         if (this.isUp) {
           bars = this.upBars

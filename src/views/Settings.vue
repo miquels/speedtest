@@ -148,14 +148,15 @@ export default {
     MBexcludeOverhead: null,
     connsUp: null,
     connsDown: null,
-    l23overhead: [],
-    l12overhead: null
+    l23overhead: null,
+    l12overhead: null,
+    overhead: null
   }),
   filters: {
     'toFixed': (val) => val.toFixed(2)
   },
   created () {
-    // copy state from store to this.data
+    // copy state from store to this.$data
     let s = this.$store.state
     for (let i in this.$data) {
       if (typeof s[i] !== 'undefined') {
@@ -164,16 +165,28 @@ export default {
     }
   },
   beforeDestroy () {
-    // copy state from this.data to store
-    this.$data.overhead = this.overhead
+    // copy state from this.$data to store
     this.$store.commit('saveSettings', this.$data)
   },
   mounted () {
-    this.connType = this.$store.state.connType
+    this.$nextTick(() => { this.connType = this.$store.state.connType })
   },
   computed: {
-    overhead () {
-      return this.calcOverhead()
+    compoundProperty () {
+      this.l12overhead
+      this.l23overhead
+      this.units
+      this.MBexcludeOverhead
+      return Date.now()
+    }
+  },
+  watch: {
+    compoundProperty () {
+      this.calcOverhead()
+    },
+    connType (val) {
+      this.updatingConnType = true
+      this.setDefaults(val)
     }
   },
   methods: {
@@ -235,6 +248,11 @@ export default {
       })
       switch (this.l12overhead) {
         case 'vdsl':
+          // VDSL PTM
+          more += 5
+          // VDSL half-a-frame
+          more += 32
+          // VDSL 65/64
           factor *= 65 / 64
           break
         case 'adsl':
@@ -265,12 +283,6 @@ export default {
       }
       this.overhead = r
       return r
-    }
-  },
-  watch: {
-    connType (val) {
-      this.updatingConnType = true
-      this.setDefaults(val)
     }
   }
 }
