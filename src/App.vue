@@ -45,7 +45,31 @@
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  mounted () {
+    // get dual-stack / v4 / v6 addresses.
+    let s = this.$store
+    let c = this.$store.state.config; // ASI
+    [ 'default', 'ipv4', 'ipv6' ].forEach((family) => {
+      this.getIP(c.apihost[family], c.apiport).then((r) => {
+        s.commit('setIP', { family: family, ip: r.remoteip })
+      }).catch(() => {})
+    })
+  },
+  methods: {
+    getIP (host, port) {
+      let url = `http://${host}:${port}/speedtest/ip`
+      return window.fetch(url, {
+        redirect: 'follow'
+      }).then((resp) => {
+        if (!resp.ok) {
+          throw new RangeError(`${url}: unexpected HTTP code ${resp.status}`)
+        }
+        console.log(resp)
+        return resp.json()
+      })
+    }
+  }
 }
 </script>
 

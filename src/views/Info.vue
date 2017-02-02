@@ -1,13 +1,8 @@
 <template>
 <div>
-.. here should be some info about the speedtest ..
+<h2>Info about this speedtest</h2>
+<p>
+Your IP address(es): {{ $store.state.ip.info }}
+</p>
 </div>
 </template>
-
-<script>
-export default {
-}
-</script>
-
-<style lang="scss">
-</style>

@@ -12,7 +12,13 @@ const state = {
   l23overhead: [ 'ether' ],
   l12overhead: 'fiber',
   overhead: 1.01,
-  config: {}
+  config: {},
+  ip: {
+    default: null,
+    ipv4: null,
+    ipv6: null,
+    info: '--'
+  }
 }
 
 // mutations: synchronous changes
