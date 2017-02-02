@@ -4,7 +4,6 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-  host: 'webdev.langeraar.net:4000',
   connType: 'Generic',
   units: 'Mbps',
   MBexcludeOverhead: true,
@@ -12,7 +11,8 @@ const state = {
   connsDown: 8,
   l23overhead: [ 'ether' ],
   l12overhead: 'fiber',
-  overhead: 1.01
+  overhead: 1.01,
+  config: {}
 }
 
 // mutations: synchronous changes

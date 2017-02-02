@@ -32,11 +32,25 @@ var router = new Router({
   ]
 })
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  store,
-  router,
-  template: '<App/>',
-  components: { App }
+// read config, then start app.
+var cfgurl = window.location.pathname.replace(/[^/]*$/, 'static/config.json')
+window.fetch(cfgurl, {
+  redirect: 'follow'
+}).then((resp) => {
+  if (!resp.ok) {
+    throw new RangeError(`${cfgurl}: unexpected HTTP code: ${resp.status}`)
+  }
+  return resp.json()
+}).then((config) => {
+  store.commit('setConfig', config)
+
+  /* eslint-disable no-new */
+  new Vue({
+    el: '#app',
+    store,
+    router,
+    template: '<App/>',
+    components: { App }
+  })
 })
+

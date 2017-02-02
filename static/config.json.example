@@ -1,0 +1,8 @@
+{
+	"apihost": {
+		"default": "speedtest.example.com",
+		"ipv4": "speedtest-ipv4.example.com",
+		"ipv6": "speedtest-ipv6.example.com"
+	},
+	"apiport": 4000
+}
