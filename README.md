@@ -2,7 +2,7 @@
 
 > HTML5 Speedtest
 
-This speedtest uses the same algorithm as the Ookla / speedtest.net test. Because of that it gives about the same results.
+This speedtest uses [the same algorithm](blob/master/doc/algorithm.md) as the Ookla / speedtest.net test. Because of that it gives about the same results.
 
 It has a responsive interface, and can be used on desktop, tablets and phones.
 
