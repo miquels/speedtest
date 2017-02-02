@@ -17,12 +17,8 @@ const state = {
 
 // mutations: synchronous changes
 const mutations = {
-  numParallelUp (state, num) {
-    state.numParallelUp = num
-  },
-
-  numParallelDown (state, num) {
-    state.numParallelDown = num
+  setConfig (state, config) {
+    state.config = config
   },
 
   saveSettings (state, data) {
@@ -31,17 +27,27 @@ const mutations = {
         state[i] = data[i]
       }
     }
+  },
+
+  setIP (state, {family, ip}) {
+    state.ip[family] = ip
+    let ips = []; // ASI
+    [ state.ip.ipv4, state.ip.ipv6 ].filter(f => f !== null).forEach((ip) => {
+      let n = ip
+      if (n === state.ip.default) {
+        n += ' (default)'
+      }
+      ips.push(n)
+    })
+    if (ips.length === 0) {
+      ips.push(state.ip.default || '--')
+    }
+    state.ip.info = ips.join(', ')
   }
 }
 
 // actions: asynchronous changes.
 const actions = {
-  numParallelUp (context, num) {
-    context.commit('numParallelUp', num)
-  },
-  numParallelDown (context, num) {
-    context.commit('numParallelDown', num)
-  }
 }
 
 export default new Vuex.Store({

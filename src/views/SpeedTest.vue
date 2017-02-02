@@ -174,8 +174,9 @@ export default {
         this.curRate = 0
 
         let s = this.$store.state
-        let url = this.isUp ? 'ws://webdev.langeraar.net:4000/speedtest/sink'
-                            : 'ws://webdev.langeraar.net:4000/speedtest/source'
+        let baseUrl = 'ws://' + s.config.apihost.default + ':' +
+                s.config.apiport + '/speedtest/'
+        let url = this.isUp ? baseUrl + 'sink' : baseUrl + 'source'
         this.st = new SpeedTest({
           url: url,
           isUpload: this.isUp,
