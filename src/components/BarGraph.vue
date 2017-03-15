@@ -21,9 +21,7 @@ export default {
   data: () => ({
     scale: 2,
     graphWidth: 0,
-    graphHeight: 0,
-    canvasWidth: 0,
-    canvasHeight: 0
+    graphHeight: 0
   }),
 
   props: {
