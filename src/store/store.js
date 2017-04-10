@@ -3,12 +3,15 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+let isIE = navigator.userAgent.match(/Trident|MSIE/)
+let conns = isIE ? 6 : 8
+
 const state = {
   connType: 'Generic',
   units: 'Mbps',
   MBexcludeOverhead: true,
-  connsUp: 8,
-  connsDown: 8,
+  connsUp: conns,
+  connsDown: conns,
   l23overhead: [ 'ether' ],
   l12overhead: 'fiber',
   overhead: 1.01,
@@ -30,6 +33,9 @@ const mutations = {
   saveSettings (state, data) {
     for (let i in data) {
       if (typeof state[i] !== 'undefined') {
+        if (isIE && (i === 'connsUp' || i === 'connsDown') && +data[i] > 6) {
+          data[i] = 6
+        }
         state[i] = data[i]
       }
     }

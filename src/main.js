@@ -1,5 +1,6 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import 'babel-polyfill'
+import 'whatwg-fetch'
+
 import Vue from 'vue'
 import App from './App'
 import './style/style.scss'
@@ -15,8 +16,6 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 Vue.use(Router)
-
-import 'whatwg-fetch'
 
 import SpeedTest from './views/SpeedTest'
 import Settings from './views/Settings'
