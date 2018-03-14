@@ -22,7 +22,7 @@ Then clone the repo and build:
 ``` bash
 # clone repo
 cd ~/src
-git cline https://github.com/miquels/speedtest.git
+git clone https://github.com/miquels/speedtest.git
 cd speedtest
 
 # install dependencies
