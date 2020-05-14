@@ -16,7 +16,7 @@
         <div class="dropdown-menu smallfont">
           <a class="dropdown-item" @click.prevent="connType='Generic'">Generic</a>
           <a class="dropdown-item" @click.prevent="connType='VDSL'">VDSL</a>
-          <a class="dropdown-item" @click.prevent="connType='ADSL'"">ADSL</a>
+          <a class="dropdown-item" @click.prevent="connType='ADSL'">ADSL</a>
           <a class="dropdown-item" @click.prevent="connType='Cable'">Cable</a>
           <a class="dropdown-item" @click.prevent="connType='Fiber'">Fiber</a>
           <a class="dropdown-item" @click.prevent="connType='Custom'">Custom</a>

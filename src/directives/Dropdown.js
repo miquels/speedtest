@@ -35,13 +35,13 @@ function keyUp (ev) {
 let click
 
 export default {
-  bind (el, binding) {
+  bind (el) {
     click = (ev) => { clickElem(ev, el) }
     el.addEventListener('click', click)
     window.addEventListener('click', clickWindow)
     window.addEventListener('keyup', keyUp)
   },
-  unbind (el, binding) {
+  unbind (el) {
     el.removeEventListener('click', click)
     window.removeEventListener('click', clickWindow)
     window.removeEventListener('keyup', keyUp)

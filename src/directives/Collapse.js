@@ -33,6 +33,7 @@ function toggle (node, className, on) {
 }
 
 function clickElem (ev) {
+  console.log('clickElem');
   lastClick.target = ev.target
   lastClick.timeStamp = ev.timeStamp
   let node = ev.target.parentNode
@@ -40,6 +41,7 @@ function clickElem (ev) {
 }
 
 function clickWindow (ev) {
+  console.log('clickWindow');
   if (ev.target === lastClick.target && ev.timeStamp === lastClick.timeStamp) {
     return
   }
@@ -50,11 +52,11 @@ function clickWindow (ev) {
 }
 
 export default {
-  bind (el, binding) {
+  bind (el) {
     el.addEventListener('click', clickElem)
     window.addEventListener('click', clickWindow)
   },
-  unbind (el, binding) {
+  unbind (el) {
     el.removeEventListener('click', clickElem)
     window.removeEventListener('click', clickWindow)
   }

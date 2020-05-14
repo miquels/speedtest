@@ -50,19 +50,19 @@
   downloaded: {{ curBytes }} bytes<br>
   speed: {{ curRate }} MB/s<br>
   elapsed: {{ curSecs }} secs<br>
-  <span v-if="avgSpeed">Average: {{ avgSpeed }} MB/s</span></br>
+  <span v-if="avgSpeed">Average: {{ avgSpeed }} MB/s</span><br>
   </div>
 </div>
 </template>
 
 <script>
-import RadialGauge from 'components/RadialGauge'
-import BarGraph from 'components/BarGraph'
-import NumberValue from 'components/NumberValue'
-import ProgressBar from 'components/ProgressBar'
-import ResizeMixin from 'components/ResizeMixin'
+import RadialGauge from '../components/RadialGauge'
+import BarGraph from '../components/BarGraph'
+import NumberValue from '../components/NumberValue'
+import ProgressBar from '../components/ProgressBar'
+import ResizeMixin from '../components/ResizeMixin'
 import SpeedTest from '../lib/speedtest.js'
-import Config from 'config'
+//XXX FIXME where did this come from import Config from 'config'
 
 const Mbitprops = {
   majorTicks: [ 0, 1, 5, 20, 50, 100, 200, 500, 1000 ],
@@ -102,7 +102,7 @@ export default {
     progress: 0,
     waiting: false,
     maxTestMS: 10000,
-    development: Config.development,
+    //development: Config.development,
     scale: Mbitprops
   }),
 

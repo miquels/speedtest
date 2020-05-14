@@ -2,25 +2,23 @@
 <div id="app">
 
 <div class="min-height-12vh">
-<nav class="navbar navbar-dark nav-colors">
+<nav class="navbar navbar-expand-md navbar-dark nav-colors d-flex">
   <div class="container maxwidth-800">
   <a class="navbar-brand" href="https://www.xs4all.nl/">
     <img src="https://cdn.xs4all.nl/content/_xs4all-themes/first-class/images/logos/xs4all-emblem-yellow.svg" height="25" alt="">
   </a>
-  <button class="navbar-toggler hidden-md-up float-xs-right" v-collapse type="submit"></button>
-  <a class="navbar-brand hidden-sm-down float-xs-right" href="https://github.com/miquels/speedtest">
-    <img src="./assets/GitHub-Mark-Light-32px.png" height="32" alt="">
-  </a>
-  <ul class="nav navbar-nav">
-    <router-link tag="li" to="/" exact class="nav-item">
-      <a class="nav-link">Speedtest</a>
-    </router-link>
-  </ul>
-  <div class="collapse navbar-toggleable-sm">
-    <div class="hidden-md-up">&nbsp;<p>&nbsp;</p></div>
-    <ul class="nav navbar-nav">
+  <div class="d-md-none x-d-sm-block d-flex">
+    <ul class="navbar-nav align-self-start mr-auto">
       <router-link tag="li" to="/" exact class="nav-item">
-        <a class="nav-link hidden-md-up">Speedtest</a>
+        <a class="nav-link">Speedtest</a>
+      </router-link>
+    </ul>
+  </div>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="d-md-none">&nbsp;<p>&nbsp;</p></div>
+    <ul class="navbar-nav">
+      <router-link tag="li" to="/" exact class="nav-item">
+        <a class="nav-link d-md-block">Speedtest</a>
       </router-link>
       <router-link tag="li" to="/info/" class="nav-item">
         <a class="nav-link">Info</a>
@@ -30,6 +28,12 @@
       </router-link>
     </ul>
   </div>
+  <a class="navbar-brand d-none d-md-block ml-auto" href="https://github.com/miquels/speedtest">
+    <img src="./assets/GitHub-Mark-Light-32px.png" height="32" alt="">
+  </a>
+  <button class="navbar-toggler d-md-none" type="button" v-collapse data-toggle="collapse" data-target="navbarNav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
   </div>
 </nav>
 </div>
