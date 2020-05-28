@@ -17,7 +17,8 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 // read config, then start app.
-var cfgurl = window.location.pathname.replace(/[^/]*$/, './config.json')
+var base = window.location.pathname.replace(/(\/settings\/?|\/info\/?|\/[^/]+)$/, '/');
+var cfgurl = base + 'config.json';
 window.fetch(cfgurl, {
   redirect: 'follow'
 }).then((resp) => {

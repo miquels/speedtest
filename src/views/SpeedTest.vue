@@ -1,7 +1,7 @@
 <template>
-<div>
+<div class="container">
   <!--div class="row height-2vh"></div-->
-  <div class="row height-5vh hidden-sm-down"></div>
+  <div class="row height-5vh d-sm-none d-md-block"></div>
 
   <div class="row">
     <div class="col-xs-12 col-md-6 height-35vh height-40vh-sm-down">
