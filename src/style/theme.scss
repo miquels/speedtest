@@ -1,0 +1,69 @@
+// Copied from _variables.scss.
+// Bootstrap Color system.
+
+$white:    #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black:    #000 !default;
+
+$grays: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+$grays: map-merge(
+  (
+    "100": $gray-100,
+    "200": $gray-200,
+    "300": $gray-300,
+    "400": $gray-400,
+    "500": $gray-500,
+    "600": $gray-600,
+    "700": $gray-700,
+    "800": $gray-800,
+    "900": $gray-900
+  ),
+  $grays
+);
+
+$blue:    #007bff !default;
+$indigo:  #6610f2 !default;
+$purple:  #6f42c1 !default;
+$pink:    #e83e8c !default;
+$red:     #dc3545 !default;
+$orange:  #fd7e14 !default;
+$yellow:  #ffc107 !default;
+$green:   #28a745 !default;
+$teal:    #20c997 !default;
+$cyan:    #17a2b8 !default;
+
+// Actual adjustments start here.
+
+$body-bg: #000;
+$body-color: #eee;
+
+$xsyellow:      #ffc300;
+
+$theme-colors: (
+  "bargraph-bars": $xsyellow,
+  "bargraph-border": #eee
+);
+
+// Dark-mode dropdown.
+$dropdown-color:                    $body-color;
+$dropdown-bg:                       $body-bg;
+$dropdown-border-color:             rgba($white, .15);
+$dropdown-divider-bg:               $gray-800 ;
+$dropdown-box-shadow:               0 .5rem 1rem rgba($white, .175);
+$dropdown-link-color:               $gray-100;
+$dropdown-link-hover-color:         darken($gray-100, 5%);
+$dropdown-link-hover-bg:            $gray-900;
+//$dropdown-link-active-color:        $component-active-color;
+//$dropdown-link-active-bg:           $component-active-bg;
+$dropdown-link-disabled-color:      $gray-400 !default;
+$dropdown-header-color:             $gray-600 !default;
+

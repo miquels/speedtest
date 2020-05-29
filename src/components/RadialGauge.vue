@@ -44,6 +44,7 @@ export default {
     }
   },
   mounted () {
+    this.fgcolor = getComputedStyle(this.$el).getPropertyValue("color")
     this.canvas = this.$el.getElementsByTagName('CANVAS')
     this.$on('resize', () => {
       this.resize()
@@ -101,6 +102,8 @@ export default {
     },
     drawTick (ctx, label, angle, len) {
       ctx.save()
+      ctx.strokeStyle = this.fgcolor
+      ctx.fillStyle = this.fgcolor
       ctx.lineWidth = Math.round(0.5 + this.csize / 300)
       ctx.beginPath()
       ctx.moveTo(...this.pos(angle, this.radius))
@@ -108,17 +111,16 @@ export default {
       ctx.stroke()
       label = '' + label
       let [x, y] = this.pos(angle, this.radius - len - 0.15 * this.radius)
-      ctx.fillStyle = '#000'
       ctx.textAlign = 'center'
       ctx.fillText(label, x, y)
       ctx.restore()
     },
     drawNeedle (ctx, angle, len) {
       ctx.save()
-      ctx.lineWidth = Math.round(0.5 + this.csize / 300)
-      ctx.beginPath()
       ctx.strokeStyle = '#666666'
       ctx.fillStyle = '#666666'
+      ctx.lineWidth = Math.round(0.5 + this.csize / 300)
+      ctx.beginPath()
       ctx.moveTo(this.xpos, this.ypos)
       ctx.lineTo(...this.pos(angle + 90, this.radius / 25))
       ctx.lineTo(...this.pos(angle, len))
@@ -160,7 +162,7 @@ export default {
     },
     drawLegend (ctx, text) {
       ctx.save()
-      ctx.fillStyle = '#000'
+      ctx.fillStyle = this.fgcolor
       ctx.textAlign = 'center'
       ctx.fillText(text, this.xpos, this.ypos + this.radius / 2.5)
       ctx.restore()
@@ -210,7 +212,7 @@ export default {
       ctx.strokeStyle = '#808080'
       ctx.fillStyle = '#808080'
       this.roundedBox(ctx, this.xpos, ypos, width * 1.1, height * 1.1, height * 1.1 / 3)
-      ctx.strokeStyle = '#000'
+      ctx.strokeStyle = this.fgcolor
       ctx.fillStyle = '#191919'
       this.roundedBox(ctx, this.xpos, ypos, width, height, height / 3)
 

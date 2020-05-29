@@ -1,12 +1,12 @@
 <template>
-<div>
+<div class="container">
   <!--div class="row height-2vh"></div-->
-  <div class="row height-5vh hidden-sm-down"></div>
+  <div class="row height-5vh d-sm-none d-md-block"></div>
 
   <div class="row">
-    <div class="col-xs-12 col-md-6 height-35vh height-40vh-sm-down">
+    <div class="col-12 col-md-6 height-35vh height-40vh-sm-down">
       <div class="row height-100">
-        <div class="col-xs-12">
+        <div class="col-12">
           <radial-gauge class="gauge" :value="gaugeValue" :units="scale.units"
             :majorTicks="scale.majorTicks" :minorTicks="scale.minorTicks"
             :transformValue="scale.transformValue" :maxValue="scale.maxValue">
@@ -14,34 +14,34 @@
         </div>
       </div>
     </div>
-    <div class="col-xs-12 col-md-6 height-30vh-sm-down height-35vh">
+    <div class="col-12 col-md-6 height-30vh-sm-down height-35vh">
       <div class="row height-50">
-        <div class="col-xs-8 flex">
+        <div class="col-8 flex">
           <bar-graph class="bars" :bars="downBars" label="download" :barWidth="2"></bar-graph>
         </div>
-        <div class="col-xs-4 flex">
+        <div class="col-4 flex">
           <number-value class="number" :label="scale.units" :value="downFinal"></number-value>
         </div>
       </div>
       <div class="row height-50">
-        <div class="col-xs-8 flex">
+        <div class="col-8 flex">
           <bar-graph class="bars" :bars="upBars" label="upload" :barWidth="2"></bar-graph>
         </div>
-        <div class="col-xs-4 flex">
+        <div class="col-4 flex">
           <number-value class="number" :label="scale.units" :value="upFinal"></number-value>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="row height-10vh hidden-sm-down"></div>
+  <div class="row height-10vh d-none d-md-block"></div>
 
-  <div class="row flex-items-xs-middle height-10vh height-20vh-sm-down">
-    <div class="col-xs-12 col-md-10">
+  <div class="row align-items-center height-10vh height-20vh-sm-down">
+    <div class="col-12 col-md-10">
       <progress-bar class="progress" :value="progress" :waiting="waiting"></progress-bar>
     </div>
-    <div class="col-xs-12 col-md-2">
-      <button class="btn btn-block-sm-down float-xs-right" :class="{'btn-warning': !running, 'btn-danger': running}" @click="toggle">{{ running ? 'Stop' : 'Start' }}</button>
+    <div class="col-12 col-md-2">
+      <button class="btn btn-block-sm-down float-right" :class="{'btn-warning': !running, 'btn-danger': running}" @click="toggle">{{ running ? 'Stop' : 'Start' }}</button>
     </div>
   </div>
 
@@ -50,19 +50,19 @@
   downloaded: {{ curBytes }} bytes<br>
   speed: {{ curRate }} MB/s<br>
   elapsed: {{ curSecs }} secs<br>
-  <span v-if="avgSpeed">Average: {{ avgSpeed }} MB/s</span></br>
+  <span v-if="avgSpeed">Average: {{ avgSpeed }} MB/s</span><br>
   </div>
 </div>
 </template>
 
 <script>
-import RadialGauge from 'components/RadialGauge'
-import BarGraph from 'components/BarGraph'
-import NumberValue from 'components/NumberValue'
-import ProgressBar from 'components/ProgressBar'
-import ResizeMixin from 'components/ResizeMixin'
+import RadialGauge from '../components/RadialGauge'
+import BarGraph from '../components/BarGraph'
+import NumberValue from '../components/NumberValue'
+import ProgressBar from '../components/ProgressBar'
+import ResizeMixin from '../components/ResizeMixin'
 import SpeedTest from '../lib/speedtest.js'
-import Config from 'config'
+//XXX FIXME where did this come from import Config from 'config'
 
 const Mbitprops = {
   majorTicks: [ 0, 1, 5, 20, 50, 100, 200, 500, 1000 ],
@@ -102,7 +102,7 @@ export default {
     progress: 0,
     waiting: false,
     maxTestMS: 10000,
-    development: Config.development,
+    //development: Config.development,
     scale: Mbitprops
   }),
 
@@ -258,7 +258,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .devel {
   background: #c00000;
   color: white;
@@ -273,21 +273,23 @@ export default {
   flex: 3;
   width: 200px;
   height: 50px;
-  color: black;
+  color: white;
   align-self: flex-end;
 }
 .number {
   flex: 2;
 }
 .progress {
-  border: 1px solid black;
+  border: 1px solid $body-color;
   border-radius: 999px;
-  color: #ffc300;
+  color: $xsyellow;
+  background-color: $gray-400;
   height: 10px;
   width: 100%;
   margin: auto;
 }
 .btn-warning, .btn-warning:hover, .btn-warning:active, .btn-warning:visited {
+    color: white !important;
     background-color: #ffc300 !important;
 }
 </style>

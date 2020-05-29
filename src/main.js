@@ -1,40 +1,26 @@
-import 'babel-polyfill'
-import 'whatwg-fetch'
+//import 'whatwg-fetch'
+
+//import './style/style.scss'
+//import '../node_modules/bootstrap/scss/bootstrap.scss'
 
 import Vue from 'vue'
 import App from './App'
-import './style/style.scss'
 
-import Collapse from 'directives/Collapse'
-import Dropdown from 'directives/Dropdown'
+import Collapse from './directives/Collapse'
 Vue.directive('collapse', Collapse)
+
+import Dropdown from './directives/Dropdown'
 Vue.directive('dropdown', Dropdown)
 
-import Router from 'vue-router'
+import router from './router'
 import store from './store'
+
 import Vuex from 'vuex'
-
 Vue.use(Vuex)
-Vue.use(Router)
-
-import SpeedTest from './views/SpeedTest'
-import Settings from './views/Settings'
-import Info from './views/Info'
-
-var router = new Router({
-  mode: 'history',
-  scrollBehavior: () => ({ y: 0 }),
-  linkActiveClass: 'active',
-  routes: [
-      { path: '/', component: SpeedTest },
-      { path: '/settings/', component: Settings },
-      { path: '/info/', component: Info },
-      { path: '*', redirect: '/' }
-  ]
-})
 
 // read config, then start app.
-var cfgurl = window.location.pathname.replace(/[^/]*$/, 'static/config.json')
+var base = window.location.pathname.replace(/(\/settings\/?|\/info\/?|\/[^/]+)$/, '/');
+var cfgurl = base + 'config.json';
 window.fetch(cfgurl, {
   redirect: 'follow'
 }).then((resp) => {
@@ -50,8 +36,7 @@ window.fetch(cfgurl, {
     el: '#app',
     store,
     router,
-    template: '<App/>',
-    components: { App }
-  })
+    render: h => h(App)
+  }).$mount('#app')
 })
 
