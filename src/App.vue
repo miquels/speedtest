@@ -56,20 +56,6 @@ body {
 #app {
   min-height: 100%;
 }
-/*
-.main {
-  position: relative;
-  overflow-x: hidden;
-  height: 78vh;
-}
-.view {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-}
-*/
 .nav-colors {
   color: white;
   background: #191919;
