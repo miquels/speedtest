@@ -1,63 +1,66 @@
+let lastClick = {}
 
-let onList = []
-
-let lastClick = {
-  target: null,
-  timeStamp: null
+function childWithClass (node, className) {
+  let nodes = node.children
+  for (let i = 0; i < nodes.length; i++) {
+    let list = nodes[i].classList
+    if (list && list.contains(className)) {
+      return nodes[i]
+    }
+  }
+  return null
 }
 
-function toggle (node, className, on) {
-  let nodes = node.getElementsByClassName('collapse')
+function toggle (ev, node, className, on) {
+  // FIXME
+  // use data-target in the toggler node to find the id of the menu node.
+  // See https://getbootstrap.com/docs/4.0/components/navbar/
+  // - Same for button?
+  let menu = childWithClass(node.parentNode, 'collapse')
   if (on === undefined || on === null) {
-    on = true
-    for (let i = 0; i < nodes.length; i++) {
-      if (nodes[i].classList.contains('in')) {
-        on = false
-      }
-    }
+    on = !menu.classList.contains(className)
   }
   if (on) {
-    for (let i = 0; i < nodes.length; i++) {
-      nodes[i].classList.add('in')
-    }
-    onList.push({ node: node, className: className })
+    menu.classList.add(className)
+    lastClick = { node: node }
   } else {
-    for (let i = 0; i < nodes.length; i++) {
-      nodes[i].classList.remove('in')
-    }
-    let i = onList.findIndex((el) => el.className === className && el.node === node)
-    if (i >= 0) {
-      onList.splice(i, 1)
-    }
+    menu.classList.remove(className)
+    lastClick = {}
   }
 }
 
-function clickElem (ev) {
-  console.log('clickElem');
-  lastClick.target = ev.target
-  lastClick.timeStamp = ev.timeStamp
-  let node = ev.target.parentNode
-  toggle(node, 'collapse')
+function clickElem (ev, node) {
+  toggle(ev, node, 'show')
+  ev.stopPropagation()
 }
 
 function clickWindow (ev) {
-  console.log('clickWindow');
-  if (ev.target === lastClick.target && ev.timeStamp === lastClick.timeStamp) {
+  console.log('clickWindow: ev: ', ev)
+  console.log('clickWindow: lastClick: ', lastClick)
+  if (!lastClick.node) {
     return
   }
-  if (onList.length > 0) {
-    var l = onList.pop()
-    toggle(l.node, l.className, false)
+  toggle(ev, lastClick.node, 'show', false)
+}
+
+function keyUp (ev) {
+  if (lastClick.node && ev.keyCode === 27) {
+    toggle(ev, lastClick.node, 'show', false)
   }
 }
 
+let click
+
 export default {
   bind (el) {
-    el.addEventListener('click', clickElem)
+    click = (ev) => { clickElem(ev, el) }
+    el.addEventListener('click', click)
     window.addEventListener('click', clickWindow)
+    window.addEventListener('keyup', keyUp)
   },
   unbind (el) {
-    el.removeEventListener('click', clickElem)
+    el.removeEventListener('click', click)
     window.removeEventListener('click', clickWindow)
+    window.removeEventListener('keyup', keyUp)
   }
 }

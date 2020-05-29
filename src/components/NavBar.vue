@@ -1,5 +1,5 @@
 <template>
-<div class="min-height-12vh">
+<div class="min-height-12vh min-height-8vh-sm-down">
 <nav class="navbar navbar-expand-md navbar-dark nav-colors">
 <div class="container maxwidth-800">
 
@@ -18,6 +18,11 @@
   </button>
 
   <div id="nav-collapse" class="navbar-collapse collapse">
+    <ul class="navbar-nav d-md-none">
+      <router-link tag="li" to="/" exact class="nav-item">
+        <a class="nav-link">Speedtest</a>
+      </router-link>
+    </ul>
     <ul class="navbar-nav">
       <router-link tag="li" to="/info/" exact class="nav-item">
         <a class="nav-link">Info</a>
@@ -26,7 +31,7 @@
         <a class="nav-link">Settings</a>
       </router-link>
     </ul>
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav d-none d-md-block ml-auto">
       <li class="nav-item">
         <a href="https://github.com/miquels/speedtest" target="_self" class="nav-link">
           <img src="../assets/GitHub-Mark-Light-32px.png" height="32" alt="GitHub">

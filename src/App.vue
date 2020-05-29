@@ -36,7 +36,7 @@ export default {
         if (!resp.ok) {
           throw new RangeError(`${url}: unexpected HTTP code ${resp.status}`)
         }
-        console.log(resp)
+        //console.log(resp)
         return resp.json()
       })
     }

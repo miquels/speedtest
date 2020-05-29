@@ -47,6 +47,8 @@
       </div>
     </div>
 
+    <div class="col d-sm-none p-2"></div>
+
     <div class="col-sm-6">
       <div class="container border rounded thinborder height-100">
       <div class="container">
@@ -107,6 +109,8 @@
       </div>
       </div>
     </div>
+
+    <div class="col d-sm-none p-2"></div>
 
     <div class="col-sm-6">
       <div class="container border rounded thinborder height-100">
@@ -301,22 +305,8 @@ export default {
 .smallfont {
   font-size: 0.8em;
 }
-.stretchflex {
-  display: flex;
-  align-items: stretch;
-}
-.height-100 {
-  height: 100%;
-}
 .thinborder {
   border: 1px solid #cccccc !important;
   border-radius: 10px !important;
-}
-.doborder {
-  margin: 10px;
-  padding: 10px;
-  border: 1px solid #cccccc;
-  border-radius: 10px;
-  width: 100%;
 }
 </style>
