@@ -6,7 +6,7 @@ This speedtest uses [the same algorithm](doc/algorithm.md) as the Ookla / speedt
 
 It has a responsive interface, and can be used on desktop, tablets and phones.
 
-![screenshot](https://cloud.githubusercontent.com/assets/6455542/22569035/6288b92a-e996-11e6-92a6-20ff57676e13.png)
+![speedtest-dark](https://user-images.githubusercontent.com/6455542/83277443-589b5380-a1d2-11ea-83e6-c620326ed3e1.png)
 
 ## Development / Build Setup
 
@@ -33,16 +33,19 @@ cp static/config.json.example static/config.json
 vim static/config.json
 
 # serve with hot reload at localhost:8080
-yarn run dev
+yarn serve
 
 # build for production with minification
-yarn run build
+yarn build
 ```
 
 ## Run the server
 ``` bash
 # build server
-yarn run build-server
+cd server
+go dep
+go build
+cd ..
 
 # run server
 server/server
@@ -58,7 +61,7 @@ For example, Chrome on OSX, press Option + Command + J.
 
 ```
 # build
-yarn run build
+yarn build
 
 # copy files to your webservers root
 cp -av dist/* /path/to/www/html
