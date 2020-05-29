@@ -273,22 +273,22 @@ export default {
   flex: 3;
   width: 200px;
   height: 50px;
-  color: black;
+  color: white;
   align-self: flex-end;
 }
 .number {
   flex: 2;
 }
 .progress {
-  border: 1px solid black;
+  border: 1px solid $body-color;
   border-radius: 999px;
-  color: #ffc300;
+  color: $xsyellow;
   height: 10px;
   width: 100%;
   margin: auto;
 }
 .btn-warning, .btn-warning:hover, .btn-warning:active, .btn-warning:visited {
-    color: white;
+    color: white !important;
     background-color: #ffc300 !important;
 }
 </style>

@@ -80,8 +80,7 @@ export default {
         barWidth = w / Math.max(this.bars.length, 1)
       }
       ctx.lineWidth = barWidth
-      ctx.strokeStyle = '#ffc300'
-
+      ctx.strokeStyle = getComputedStyle(this.canvasDiv).getPropertyValue("color")
       for (let i = this.lastBar; i < this.bars.length; i++) {
         ctx.beginPath()
         ctx.moveTo(i * barWidth, this.canvasHeight)
@@ -102,8 +101,9 @@ export default {
 .bargraph__canvas {
   display: flex;
   height: 100%;
-  border-left: 1px solid #191919;
-  border-bottom: 1px solid #191919;
+  border-left: 1px solid theme-color("bargraph-border");
+  border-bottom: 1px solid theme-color("bargraph-border");
+  color: theme-color("bargraph-bars");
 }
 .bargraph__label {
   font-size: 0.8em;

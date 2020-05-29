@@ -8,7 +8,7 @@
         <div class="row"><p><b>Connection Type</b></p></div>
         <div class="row">
           <div class="dropdown" v-dropdown>
-            <button class="btn btn-light border dropdown-toggle smallfont"
+            <button class="btn btn-dark border dropdown-toggle smallfont"
              type="button" id="dropdownMenuButton" data-toggle="dropdown">
               {{ connType }}
             </button>
