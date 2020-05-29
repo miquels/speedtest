@@ -258,7 +258,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .devel {
   background: #c00000;
   color: white;
@@ -283,6 +283,7 @@ export default {
   border: 1px solid $body-color;
   border-radius: 999px;
   color: $xsyellow;
+  background-color: $gray-400;
   height: 10px;
   width: 100%;
   margin: auto;

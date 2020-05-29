@@ -41,3 +41,29 @@ $green:   #28a745 !default;
 $teal:    #20c997 !default;
 $cyan:    #17a2b8 !default;
 
+// Actual adjustments start here.
+
+$body-bg: #000;
+$body-color: #eee;
+
+$xsyellow:      #ffc300;
+
+$theme-colors: (
+  "bargraph-bars": $xsyellow,
+  "bargraph-border": #eee
+);
+
+// Dark-mode dropdown.
+$dropdown-color:                    $body-color;
+$dropdown-bg:                       $body-bg;
+$dropdown-border-color:             rgba($white, .15);
+$dropdown-divider-bg:               $gray-800 ;
+$dropdown-box-shadow:               0 .5rem 1rem rgba($white, .175);
+$dropdown-link-color:               $gray-100;
+$dropdown-link-hover-color:         darken($gray-100, 5%);
+$dropdown-link-hover-bg:            $gray-900;
+//$dropdown-link-active-color:        $component-active-color;
+//$dropdown-link-active-bg:           $component-active-bg;
+$dropdown-link-disabled-color:      $gray-400 !default;
+$dropdown-header-color:             $gray-600 !default;
+

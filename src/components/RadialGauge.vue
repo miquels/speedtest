@@ -45,7 +45,6 @@ export default {
   },
   mounted () {
     this.fgcolor = getComputedStyle(this.$el).getPropertyValue("color")
-    console.log('fgcolor: ', this.fgcolor)
     this.canvas = this.$el.getElementsByTagName('CANVAS')
     this.$on('resize', () => {
       this.resize()

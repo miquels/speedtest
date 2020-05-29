@@ -1,8 +1,10 @@
 //import 'whatwg-fetch'
 
+//import './style/style.scss'
+//import '../node_modules/bootstrap/scss/bootstrap.scss'
+
 import Vue from 'vue'
 import App from './App'
-import './style/style.scss'
 
 import Collapse from './directives/Collapse'
 Vue.directive('collapse', Collapse)

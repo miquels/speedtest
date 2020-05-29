@@ -3,7 +3,9 @@ module.exports = {
     requireModuleExtension: false,
     loaderOptions: {
       sass: {
-        prependData: `@import "~@/style/style.scss";`
+        // Import global variables here, import all the other (s)css
+        // via src/App.vue -> <style>.
+        prependData: `@import "~@/style/bootstrap-pre.scss";`
       }
     }
   }

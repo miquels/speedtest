@@ -45,13 +45,12 @@ export default {
 </script>
 
 <style lang="scss">
+@import "./style/bootstrap-post.scss";
+@import "./style/style.scss";
 html, body {
   margin: 0px;
   padding: 0px;
   height: 100vh;
-}
-body {
-  background: #ffffff;
 }
 #app {
   min-height: 100%;
