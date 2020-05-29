@@ -4947,11 +4947,6 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
-magic-check@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/magic-check/-/magic-check-1.0.3.tgz#3236fb720f33ec8b821663247547556da665be42"
-  integrity sha1-Mjb7cg8z7IuCFmMkdUdVbaZlvkI=
-
 make-dir@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/make-dir/-/make-dir-2.1.0.tgz#5f0310e18b8be898cc07009295a30ae41e91e6f5"
