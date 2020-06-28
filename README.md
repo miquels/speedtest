@@ -29,8 +29,8 @@ cd speedtest
 yarn
 
 # install configuration file
-cp static/config.json.example static/config.json
-vim static/config.json
+cp public/config.json.example public/config.json
+vim public/config.json
 
 # serve with hot reload at localhost:8080
 yarn serve
@@ -63,9 +63,10 @@ For example, Chrome on OSX, press Option + Command + J.
 # build
 yarn build
 
-# copy files to your webservers root
-cp -av dist/* /path/to/www/html
-cp static/config.json /path/to/www/html/static
+# copy files to your webservers root. change /path/to/www/html to the
+# actual path on your system (e.g. debian: /var/www/html).
+cp -av dist/* /path/to/www/html/
+cp -a public/{index.html,config.json} /path/to/www/html/
 ```
 
 You also need to run the API server as a daemon- that's OS specific, and

@@ -1,7 +1,7 @@
 <template>
 <div class="container">
   <!--div class="row height-2vh"></div-->
-  <div class="row height-5vh d-sm-none d-md-block"></div>
+  <div class="row height-5vh d-none d-md-block"></div>
 
   <div class="row">
     <div class="col-12 col-md-6 height-35vh height-40vh-sm-down">
@@ -36,7 +36,7 @@
 
   <div class="row height-10vh d-none d-md-block"></div>
 
-  <div class="row align-items-center height-10vh height-20vh-sm-down">
+  <div class="row align-items-center height-10vh height-15vh-sm-down">
     <div class="col-12 col-md-10">
       <progress-bar class="progress" :value="progress" :waiting="waiting"></progress-bar>
     </div>
