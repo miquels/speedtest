@@ -1,7 +1,16 @@
 # SPEEDTEST SERVER
 
-The speedtest server is written in Rust. Its basic goal in life is to
+The speedtest server is written in Go. Its basic goal in life is to
 source data for download tests, and to sink data for upload tests.
+
+## Performance
+
+    Processor: Intel Xeon E5405 @ 2.00GHz
+
+    Download 1000 Mbit/s: 10% CPU
+    Upload   1000 Mbit/s:  75% CPU
+
+## API
 
 ### Get client IP address
 

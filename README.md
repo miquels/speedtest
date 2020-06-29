@@ -11,17 +11,14 @@ It has a responsive interface, and can be used on desktop, tablets and phones.
 ## Development / Build Setup
 
 - as usual, you need nodejs and yarn
-- you need to have the Go compiler (golang) installed, version 1.6 or later
-  (for debian jessie, there's a modern enough version in jessie-backports)
-- the Makefile for the server sets GOPATH to $HOME. That means the build
-  environment will put the go library dependencies in ~/src and ~/pkg. You
-  might have to create ~/src first. If your setup is different, edit server/Makefile.
+- you need to have Rust (compiler + cargo) installed, version 1.40 or later.
+  Debian 11 (bullseye) (to be released in 2021) has a modern enough Rust.
+  Otherwise, go to https://rustup.rs/ and follow the (simple) install instructions.
 
 Then clone the repo and build:
 
 ``` bash
 # clone repo
-cd ~/src
 git clone https://github.com/miquels/speedtest.git
 cd speedtest
 
@@ -43,12 +40,12 @@ yarn build
 ``` bash
 # build server
 cd server
-go dep
-go build
+source ~/.cargo/env # optional
+cargo build --release
 cd ..
 
 # run server
-server/server
+server/target/release/speedtest-server
 ```
 
 If you point yout browser at localhost:8080, you should see the webinterface.
@@ -69,7 +66,17 @@ cp -av dist/* /path/to/www/html/
 cp -a public/{index.html,config.json} /path/to/www/html/
 ```
 
-You also need to run the API server as a daemon- that's OS specific, and
-no sysv / systemd / whatever files have been included yet. The easiest
+# Running the API server.
+
+The compiled server binary can be found in this location:
+server/target/release/speedtest-server. Copy it to a generic location,
+like /usr/local/sbin. It needs to be run as a daemon. That's OS specific,
+and no sysv / systemd / whatever files have been included yet. The easiest
 solution is to run it in a ``screen'' session for now :)
+
+The server has TLS (SSL) support -- run it with '--help' for more info.
+You can also use it to serve the entire application, using the --dir option.
+You don't get any logging in that case though, so if you need that,
+serve the application using a generic webserver like Apache or Nginx,
+and run the api server on a separate port.
 

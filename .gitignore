@@ -3,6 +3,10 @@ public/config.json
 node_modules
 /dist
 
+# Rust artefacts
+server/target
+server/speedtest-server
+
 # local env files
 .env.local
 .env.*.local

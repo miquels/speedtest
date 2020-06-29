@@ -1,17 +1,10 @@
-#! /bin/sh
-
-export GOPATH = $(HOME)
-
-all:	get build
+all:	build
 
 install:	all
 
 build:
 	@echo "server: building"
-	go build
+	cargo build --release
+	cp -p target/release/speedtest-server .
 
-get:
-	@echo "server: getting dependencies.."
-	go get
-
-.PHONY:	get build install
+.PHONY: all build install

@@ -27,8 +27,10 @@ window.fetch(cfgurl, {
   if (!resp.ok) {
     throw new RangeError(`${cfgurl}: unexpected HTTP code: ${resp.status}`)
   }
-  return resp.json()
-}).then((config) => {
+  return resp.text()
+}).then((text) => {
+  let json = text.replace(/\/\/.*\n/gm, '')
+  let config = JSON.parse(json)
   store.commit('setConfig', config)
 
   /* eslint-disable no-new */

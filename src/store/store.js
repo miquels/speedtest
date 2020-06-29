@@ -26,7 +26,33 @@ const state = {
 
 // mutations: synchronous changes
 const mutations = {
-  setConfig (state, config) {
+  setConfig (state, cfg) {
+    // get values from config or from defaults.
+    let proto = cfg.protocol || window.location.protocol
+    if (proto && !proto.endsWith(':')) {
+      proto = proto + ':'
+    }
+    let ws_proto = proto.startsWith('http:') ? 'ws:' : 'wss:'
+    let port = cfg.apiport || window.location.port
+    if (port) {
+      port = ':' + port
+    }
+    if (!cfg.apihost || !cfg.apihost.default) {
+      cfg.apihost = { default: window.location.hostname }
+    }
+
+    // now build up config.api values.
+    let config = { api: {} }
+    config.api.default = proto + '//' + cfg.apihost.default + port
+    config.api.ws = ws_proto + '//' + cfg.apihost.default + port
+    if (cfg.apihost.ipv4) {
+      config.api.ipv4 = proto + '//' + cfg.apihost.ipv4 + port
+    }
+    if (cfg.apihost.ipv6) {
+      config.api.ipv6 = proto + '//' + cfg.apihost.ipv6 + port
+    }
+
+    console.log('config:', config)
     state.config = config
   },
 

@@ -1,8 +1,12 @@
+// All settings here are optional. If you don't set one, the
+// default is taken from the request (i.e. the URL where the
+// application is hosted).
 {
+	// protocol: "http",
+	"apiport": 4000,
 	"apihost": {
-		"default": "speedtest.example.com",
-		"ipv4": "speedtest-ipv4.example.com",
-		"ipv6": "speedtest-ipv6.example.com"
-	},
-	"apiport": 4000
+		// "default": "speedtest.example.com",
+		// "ipv4": "speedtest-ipv4.example.com",
+		// "ipv6": "speedtest-ipv6.example.com"
+	}
 }

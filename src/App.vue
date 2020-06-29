@@ -22,14 +22,14 @@ export default {
     let s = this.$store
     let c = this.$store.state.config; // ASI
     [ 'default', 'ipv4', 'ipv6' ].forEach((family) => {
-      this.getIP(c.apihost[family], c.apiport).then((r) => {
+      this.getIP(c.api[family]).then((r) => {
         s.commit('setIP', { family: family, ip: r.remoteip })
       }).catch(() => {})
     })
   },
   methods: {
-    getIP (host, port) {
-      let url = `http://${host}:${port}/speedtest/ip`
+    getIP (baseUrl) {
+      let url = baseUrl + '/speedtest/ip'
       return window.fetch(url, {
         redirect: 'follow'
       }).then((resp) => {
