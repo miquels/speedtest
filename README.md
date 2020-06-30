@@ -10,10 +10,16 @@ It has a responsive interface, and can be used on desktop, tablets and phones.
 
 ## Development / Build Setup
 
-- as usual, you need nodejs and yarn
+- as usual, you need `nodejs` and `yarn`.
 - you need to have Rust (compiler + cargo) installed, version 1.40 or later.
-  Debian 11 (bullseye) (to be released in 2021) has a modern enough Rust.
-  Otherwise, go to https://rustup.rs/ and follow the (simple) install instructions.
+
+Right now no Linux distributions come with a recent enough Rust.
+You need to install it manually. Instructions can be found on
+https://rustup.rs/, but for Linux and macos it boils down to:
+
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
 
 Then clone the repo and build:
 
@@ -31,16 +37,13 @@ vim public/config.json
 
 # serve with hot reload at localhost:8080
 yarn serve
-
-# build for production with minification
-yarn build
 ```
 
 ## Run the server
 ``` bash
 # build server
 cd server
-source ~/.cargo/env # optional
+source ~/.cargo/env # should not be needed, but try if the below fails.
 cargo build --release
 cd ..
 
@@ -57,13 +60,12 @@ For example, Chrome on OSX, press Option + Command + J.
 ## Production use
 
 ```
-# build
+# build and minify.
 yarn build
 
 # copy files to your webservers root. change /path/to/www/html to the
 # actual path on your system (e.g. debian: /var/www/html).
 cp -av dist/* /path/to/www/html/
-cp -a public/{index.html,config.json} /path/to/www/html/
 ```
 
 Before you can use the app, you need to run the API server as well.
