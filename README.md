@@ -66,17 +66,44 @@ cp -av dist/* /path/to/www/html/
 cp -a public/{index.html,config.json} /path/to/www/html/
 ```
 
+Before you can use the app, you need to run the API server as well.
+
 # Running the API server.
 
-The compiled server binary can be found in this location:
-server/target/release/speedtest-server. Copy it to a generic location,
-like /usr/local/sbin. It needs to be run as a daemon. That's OS specific,
-and no sysv / systemd / whatever files have been included yet. The easiest
-solution is to run it in a ``screen'' session for now :)
+If you have compiled the server as described above, its binary needs
+to be copied to a generic location, for example:
 
-The server has TLS (SSL) support -- run it with '--help' for more info.
-You can also use it to serve the entire application, using the --dir option.
-You don't get any logging in that case though, so if you need that,
-serve the application using a generic webserver like Apache or Nginx,
-and run the api server on a separate port.
+```
+cp server/target/release/speedtest-server /usr/local/sbin
+```
+
+The server needs to be run as a daemon. That's OS specific, and
+no sysv / systemd / whatever files have been included yet. The easiest
+solution is to run it in a `screen` session for now :)
+
+```
+screen
+/usr/local/sbin/speedtest-server
+# Press "Control-a d" to detach
+# Use "screen -x" to re-attach
+```
+
+There are several command line options you can use, such as:
+
+- `--key`, `--chain`: options for `TLS` (SSL) support
+- `--dir`: serve the entire app, not just the API
+- `--listen`: address/port to listen on (default 4000)
+- `--help`: get a list of all options.
+
+For example, to serve TLS on port 443:
+
+```
+/usr/local/sbin/speedtest-server --key certificate.key \
+        --chain certificate.pem --listen 443 --dir /var/www/html/speedtest
+# Note: set `apiport` in `config.json` to 443, or just comment it out.
+```
+
+Note that if you use `--dir`, you don't get any logging. So if you
+need that, serve the application using a generic webserver like
+Apache or Nginx, and run the api server on a separate port.
 
