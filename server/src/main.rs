@@ -3,6 +3,7 @@ extern crate clap;
 
 use std::io;
 use std::net::{AddrParseError, IpAddr, SocketAddr};
+use std::path::PathBuf;
 use std::time::SystemTime;
 
 use futures::future::{ok, err, FutureExt};
@@ -230,6 +231,19 @@ macro_rules! die {
     });
 }
 
+fn resolve(dir: &str, file: &str) -> PathBuf {
+    let mut p = file.parse::<PathBuf>().unwrap();
+    if p.is_relative() && p.metadata().is_err() {
+        let mut d = dir.parse::<PathBuf>().unwrap();
+        d.push(&p);
+        p = d;
+    }
+    if let Err(e) = p.metadata() {
+        die!(std => "{:?}: {}", p, e);
+    }
+    p
+}
+
 async fn async_main() {
     let matches = clap_app!(speedtest_server =>
         (version: "0.2")
@@ -254,7 +268,11 @@ async fn async_main() {
     }
 
     let tls = match (matches.value_of("KEY"), matches.value_of("CHAIN")) {
-        (Some(k), Some(v)) => Some((k, v)),
+        (Some(k), Some(v)) => {
+            let key = resolve("/etc/ssl/private", k);
+            let chn = resolve("/etc/ssl/certs", v);
+            Some((key, chn))
+        },
         (Some(_), None) => die!(std => "missing --chain option"),
         (None, Some(_)) => die!(std => "missing --key option"),
         (None, None) => None,
@@ -322,7 +340,7 @@ async fn async_main() {
     let mut handles = Vec::new();
     for (ref addr, ref name) in &listen {
         let srv = warp::serve(routes.clone());
-        if let Some((key, cert)) = tls {
+        if let Some((ref key, ref cert)) = tls {
             // why no try_bind_ephemeral in the TlsServer?
             let srv = srv.tls().key_path(key).cert_path(cert).bind(addr.clone());
             log::info!("Listening on {}", name);

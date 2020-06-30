@@ -33,7 +33,7 @@ const mutations = {
       proto = proto + ':'
     }
     let ws_proto = proto.startsWith('http:') ? 'ws:' : 'wss:'
-    let port = cfg.apiport || window.location.port
+    let port = cfg.apiport || window.location.port || ''
     if (port) {
       port = ':' + port
     }
