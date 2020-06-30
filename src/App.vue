@@ -18,16 +18,19 @@ export default {
     NavBar,
   },
   mounted () {
-    // get dual-stack / v4 / v6 addresses.
-    let s = this.$store
-    let c = this.$store.state.config; // ASI
-    [ 'default', 'ipv4', 'ipv6' ].forEach((family) => {
-      this.getIP(c.api[family]).then((r) => {
-        s.commit('setIP', { family: family, ip: r.remoteip })
-      }).catch(() => {})
-    })
+    this.getIPs()
   },
   methods: {
+    getIPs () {
+      // get dual-stack / v4 / v6 addresses.
+      let s = this.$store
+      let c = this.$store.state.config; // ASI
+      [ 'default', 'ipv4', 'ipv6' ].forEach((family) => {
+        this.ws_getIP(c.api[family]).then((r) => {
+          s.commit('setIP', { family: family, ip: r.remoteip })
+        }).catch(() => {})
+      })
+    },
     getIP (baseUrl) {
       let url = baseUrl + '/speedtest/ip'
       return window.fetch(url, {
@@ -39,6 +42,26 @@ export default {
         //console.log(resp)
         return resp.json()
       })
+    },
+    ws_getIP (baseUrl) {
+      baseUrl = baseUrl.replace(/^http/, 'ws');
+      let url = baseUrl + '/speedtest/wsip'
+      let p = new Promise((resolve, reject) => {
+        try {
+          var ws = new window.WebSocket(url)
+        } catch (e) {
+          console.log('socket exception', e)
+          reject(e)
+        }
+        ws.onmessage = (ev) => {
+          try {
+            resolve(JSON.parse(ev.data))
+          } catch(e) {
+            reject(e)
+          }
+        }
+      })
+      return p
     }
   }
 }
