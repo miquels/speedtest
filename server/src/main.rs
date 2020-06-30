@@ -68,7 +68,7 @@ struct SinkResponse {
 #[derive(Serialize, Deserialize)]
 struct IpResponse {
     remoteip: String,
-    remoteport: String,
+    remoteport: Option<u16>,
 }
 
 // Time since the epoch in microseconds.
@@ -244,6 +244,46 @@ fn resolve(dir: &str, file: &str) -> PathBuf {
     p
 }
 
+// Get the first IP address from a comma-separared list.
+fn parse_xff(s: &str) -> Option<IpAddr> {
+    s.split(",").next().and_then(|s| s.trim().parse::<IpAddr>().ok())
+}
+
+// Get the first by=<ipaddress> from a semicolon-separated list.
+fn parse_fwd(s: &str) -> Option<IpAddr> {
+    let iter = s.split(";").map(|s| s.trim());
+    iter.filter(|s| s.starts_with("by=")).find_map(|s| s[2..].parse::<IpAddr>().ok())
+}
+
+fn parse_remoteip(addr: Option<SocketAddr>, xff_headers: bool, xff: Option<String>, xri: Option<String>, fwd: Option<String>) -> Option<SocketAddr> {
+    let is_loopback = match addr {
+        Some(SocketAddr::V4(ref addr)) => addr.ip().is_loopback(),
+        Some(SocketAddr::V6(ref addr)) => addr.ip().is_loopback(),
+        None => false,
+    };
+    if is_loopback || xff_headers {
+        // parse X-Forwarded-For, if present.
+        if let Some(ref v) = xff {
+            if let Some(addr) = parse_xff(v) {
+                return Some(SocketAddr::new(addr, 0));
+            }
+        }
+        // parse X-Real-Ip, if present.
+        if let Some(ref v) = xri {
+            if let Some(addr) = parse_xff(v) {
+                return Some(SocketAddr::new(addr, 0));
+            }
+        }
+        // parse Forwarded, if present.
+        if let Some(ref v) = fwd {
+            if let Some(addr) = parse_fwd(v) {
+                return Some(SocketAddr::new(addr, 0));
+            }
+        }
+    }
+    addr
+}
+
 async fn async_main() {
     let matches = clap_app!(speedtest_server =>
         (version: "0.2")
@@ -251,6 +291,7 @@ async fn async_main() {
         (@arg DIR: -d --dir +takes_value "Directory to serve")
         (@arg CHAIN: --chain +takes_value "TLS certificate chain file")
         (@arg KEY: --key +takes_value "TLS certificate key file")
+        (@arg XFF: --("--xff-headers") "Use X-Forwarded-For/X-Real-Ip/Forwarded headers")
     )
     .get_matches();
 
@@ -279,6 +320,7 @@ async fn async_main() {
     };
 
     let dir = matches.value_of("DIR");
+    let do_xff = matches.is_present("XFF");
 
     let sink = warp::path!("speedtest" / "sink")
         .and(warp::ws())
@@ -303,18 +345,22 @@ async fn async_main() {
     let ipaddr = warp::get()
         .and(warp::path!("speedtest" / "ip"))
         .and(warp::addr::remote())
-        .map(|addr: Option<SocketAddr>| {
+        .and(warp::header::optional::<String>("X-Forwarded-For"))
+        .and(warp::header::optional::<String>("X-Real-Ip"))
+        .and(warp::header::optional::<String>("Forwarded"))
+        .map(move |addr: Option<SocketAddr>, xff: Option<String>, xri: Option<String>, fwd: Option<String>| {
+            let addr = parse_remoteip(addr, do_xff, xff, xri, fwd);
             let (mut remoteip, remoteport) = match addr {
-                Some(SocketAddr::V4(sa)) => (sa.ip().to_string(), sa.port().to_string()),
-                Some(SocketAddr::V6(sa)) => (sa.ip().to_string(), sa.port().to_string()),
-                None => ("unknown".to_string(), "unknown".to_string()),
+                Some(SocketAddr::V4(sa)) => (sa.ip().to_string(), sa.port()),
+                Some(SocketAddr::V6(sa)) => (sa.ip().to_string(), sa.port()),
+                None => ("unknown".to_string(), 0),
             };
             if remoteip.starts_with("::ffff:") {
                 remoteip = remoteip.replace("::ffff:", "");
             }
             serde_json::to_string(&IpResponse {
                 remoteip,
-                remoteport,
+                remoteport: if remoteport != 0 { Some(remoteport) } else { None },
             })
             .unwrap()
         })
