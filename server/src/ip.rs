@@ -4,8 +4,15 @@ use std::net::{IpAddr, SocketAddr};
 use warp::Filter;
 
 // Get the first IP address from a comma-separared list.
-fn parse_xff(s: &str) -> Option<IpAddr> {
-    s.split(",").next().and_then(|s| s.trim().parse::<IpAddr>().ok())
+fn parse_xff(s: &str) -> Option<SocketAddr> {
+    s.split(",").next()
+        .map(|s| s.trim())
+        .and_then(|s| {
+            // Now try to parse as IpAddr or SocketAddr.
+            s.parse::<IpAddr>().map(|i| SocketAddr::new(i, 0))
+                .or_else(|_| s.parse::<SocketAddr>())
+                .ok()
+        })
 }
 
 // Get the first for=<ipaddress>.
@@ -16,10 +23,9 @@ fn parse_fwd(s: &str) -> Option<SocketAddr> {
     field.split(";")
         .map(|s| s.trim().to_lowercase())
         .find(|s| s.starts_with("for="))
-        // Trim surrounding quotes.
-        .map(|s| s[4..].trim_matches('"').to_string())
-        // Now try to parse as IpAddr or SocketAddr.
-        .and_then(|ref s| {
+        .and_then(|s| {
+            let s = s[4..].trim_matches('"');
+            // Now try to parse as IpAddr or SocketAddr.
             s.parse::<IpAddr>().map(|i| SocketAddr::new(i, 0))
                 .or_else(|_| s.parse::<SocketAddr>())
                 .ok()
@@ -36,13 +42,13 @@ fn parse_remoteip(addr: Option<SocketAddr>, xff_headers: bool, xff: Option<Strin
         // parse X-Forwarded-For, if present.
         if let Some(ref v) = xff {
             if let Some(addr) = parse_xff(v) {
-                return Some(SocketAddr::new(addr, 0));
+                return Some(addr);
             }
         }
         // parse X-Real-Ip, if present.
         if let Some(ref v) = xri {
             if let Some(addr) = parse_xff(v) {
-                return Some(SocketAddr::new(addr, 0));
+                return Some(addr);
             }
         }
         // parse Forwarded, if present.
