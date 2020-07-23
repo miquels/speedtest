@@ -2,7 +2,7 @@
 //!
 use std::io;
 use std::net::SocketAddr;
-use std::time::SystemTime;
+use std::time::{Duration, SystemTime};
 
 use futures::future::{ok, err, FutureExt};
 use futures::sink::SinkExt;
@@ -10,9 +10,13 @@ use futures::stream::{FuturesUnordered, StreamExt};
 use once_cell::sync::Lazy;
 use serde::{Deserialize, Serialize};
 use snafu::{ResultExt, Snafu};
+use tokio::time::{timeout, timeout_at, Elapsed, Instant};
 use warp::filters::ws::{Message, WebSocket as WsStream};
 use warp::{Filter, filters::BoxedFilter, Reply};
 use warp::http::header::{HeaderMap, HeaderValue};
+
+const SEND_TIMEOUT: Duration = Duration::from_secs(20);
+const SINK_TIMEOUT: Duration = Duration::from_secs(20);
 
 const BLOB_SIZE: usize = 1_000_0000;
 
@@ -35,6 +39,14 @@ enum Error {
     },
     #[snafu(display("api: message: not text"))]
     NotText,
+    #[snafu(display("api_send: timeout"))]
+    SendTimeout {
+        source: Elapsed,
+    },
+    #[snafu(display("api_sink: timeout"))]
+    SinkTimeout {
+        source: Elapsed,
+    },
     #[snafu(display("api: {}: {}", msg, source))]
     IoError {
         msg: &'static str,
@@ -126,8 +138,7 @@ async fn api_source(stream: WsStream) -> Result<()> {
 
     // receiver just waits for a message - any message.
     let receiver = async move {
-        let _ = rx.next().await;
-        Ok::<_, Error>(())
+        timeout(SEND_TIMEOUT, rx.next()).await.map(|_| ()).context(SendTimeout{})
     };
 
     // run sender and receiver in this task, so that if this task is
@@ -145,26 +156,33 @@ async fn api_source(stream: WsStream) -> Result<()> {
 // Sink.
 async fn api_sink(mut stream: WsStream) -> Result<()> {
     log::debug!("api_sink: start");
-    while let Some(msg) = stream.next().await {
-        let msg = msg.context(WebSocket { msg: "read" })?;
-        if msg.is_close() {
-            break;
+    let task = async {
+        while let Some(msg) = stream.next().await {
+            let msg = msg.context(WebSocket { msg: "read" })?;
+            if msg.is_close() {
+                break;
+            }
+            if !msg.is_binary() {
+                continue;
+            }
+            let resp = serde_json::to_string(&SinkResponse {
+                timestamp: unix_microseconds() as f64 / 1000f64,
+                messagesize: msg.as_bytes().len(),
+            })
+            .context(JsonSerialize {})?;
+            log::debug!("api_sink: send {}", resp);
+            stream
+                .send(Message::text(resp))
+                .await
+                .context(WebSocket { msg: "write" })?
         }
-        if !msg.is_binary() {
-            continue;
-        }
-        let resp = serde_json::to_string(&SinkResponse {
-            timestamp: unix_microseconds() as f64 / 1000f64,
-            messagesize: msg.as_bytes().len(),
-        })
-        .context(JsonSerialize {})?;
-        log::debug!("api_sink: send {}", resp);
-        stream
-            .send(Message::text(resp))
-            .await
-            .context(WebSocket { msg: "write" })?;
+        Ok::<(), Error>(())
+    };
+
+    match timeout_at(Instant::now() + SINK_TIMEOUT, task).await.context(SinkTimeout{}) {
+        Err(e) | Ok(Err(e)) => log::debug!("api_sink: {}", e),
+        Ok(Ok(_)) => log::debug!("api_sink: done"),
     }
-    log::debug!("api_sink: done");
     Ok(())
 }
 
