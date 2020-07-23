@@ -39,9 +39,9 @@ vim public/config.json
 yarn serve
 ```
 
-## Run the server
+## Run the backend server
 ``` bash
-# build server
+# build backend server
 cd server
 source ~/.cargo/env # should not be needed, but try if the below fails.
 cargo build --release
@@ -68,15 +68,15 @@ yarn build
 cp -av dist/* /path/to/www/html/
 ```
 
-Before you can use the app, you need to run the API server as well.
+Before you can use the app, you need to run the backend server as well.
 
-# Running the API server.
+# Running the backend server.
 
 If you have compiled the server as described above, its binary needs
 to be copied to a generic location, for example:
 
 ```
-cp server/target/release/speedtest-server /usr/local/sbin
+cp server/target/release/speedtest-server /usr/local/sbin/speedtest-server
 ```
 
 The server needs to be run as a daemon. That's OS specific, and
@@ -93,7 +93,7 @@ screen
 There are several command line options you can use, such as:
 
 - `--key`, `--chain`: options for `TLS` (SSL) support
-- `--dir`: serve the entire app, not just the API
+- `--dir`: serve the entire app, not just the speedtest backend
 - `--listen`: address/port to listen on (default 4000)
 - `--help`: get a list of all options.
 
@@ -105,7 +105,9 @@ For example, to serve TLS on port 443:
 # Note: set `apiport` in `config.json` to 443, or just comment it out.
 ```
 
-Note that if you use `--dir`, you don't get any logging. So if you
-need that, serve the application using a generic webserver like
-Apache or Nginx, and run the api server on a separate port.
+Note that the server does not write any access logs. If you do need
+access logs, you can get them (at least for the application itself,
+html/css/javascripts/assets) by serving the application using a
+generic webserver like Apache or Nginx, and running the api server
+on a separate port.
 
