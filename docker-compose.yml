@@ -1,0 +1,14 @@
+version: "3.6"
+services:
+  ui:
+    container_name: speedtest-ui
+    build: .
+    ports:
+      - 80:80
+    depends_on:
+      - server
+  server:
+    container_name: speedtest-server
+    build: ./server-go
+    ports:
+      - 4000:4000

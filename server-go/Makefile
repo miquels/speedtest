@@ -1,7 +1,5 @@
 #! /bin/sh
 
-export GOPATH = $(HOME)
-
 all:	get build
 
 install:	all
