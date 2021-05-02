@@ -1,5 +1,13 @@
 # speedtest
 
+========================================
+
+`THIS REPOSITORY HAS BEEN ARCHIVED AS OF 02-May-2021`
+
+This project will not be developed any further.
+
+========================================
+
 > HTML5 Speedtest
 
 This speedtest uses [the same algorithm](doc/algorithm.md) as the Ookla / speedtest.net test. Because of that it gives about the same results.
